@@ -9,7 +9,7 @@ import com.target.myretailrestapi.model.Product;
 @Configuration
 public class MongoConfiguration implements RepositoryRestConfigurer {
 	@Override
-    public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
+	public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
 		config.exposeIdsFor(Product.class);
 	}
 
