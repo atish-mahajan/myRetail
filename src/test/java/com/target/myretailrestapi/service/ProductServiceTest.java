@@ -48,7 +48,7 @@ public class ProductServiceTest {
 		Product mockedProduct = new Product("13860428", "The Big Lebowski (Blu-ray) (Widescreen)", current_price);
 
 		Mockito.when(productRepoMock.getProductById("13860428")).thenReturn(mockedProduct);
-		Product actualProduct = productServiceMock.getProductById("13860428");
+		Product actualProduct = productServiceMock.getProductDetails("13860428");
 		assertEquals(mockedProduct, actualProduct);
 	}
 

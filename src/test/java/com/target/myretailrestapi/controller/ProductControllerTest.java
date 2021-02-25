@@ -56,7 +56,7 @@ public class ProductControllerTest {
 
 		Product mockedProduct = new Product("13860428", "The Big Lebowski (Blu-ray) (Widescreen)", current_price);
 
-		Mockito.when(productServiceMock.getProductById(Mockito.anyString())).thenReturn(mockedProduct);
+		Mockito.when(productServiceMock.getProductDetails(Mockito.anyString())).thenReturn(mockedProduct);
 		String apiUrl = "http://localhost:8080/v1/products/13860428";
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get(apiUrl).accept(MediaType.APPLICATION_JSON_VALUE);
 
@@ -75,7 +75,7 @@ public class ProductControllerTest {
 
 	@Test()
 	public void getProductDetailsTest_productNotFound() throws Exception {
-		Mockito.when(productServiceMock.getProductById(Mockito.anyString())).thenThrow(new NullPointerException());
+		Mockito.when(productServiceMock.getProductDetails(Mockito.anyString())).thenThrow(new NullPointerException());
 
 		try {
 			String apiUrl = "v1/products/138604289";

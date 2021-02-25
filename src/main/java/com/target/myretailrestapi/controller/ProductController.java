@@ -15,18 +15,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.target.myretailrestapi.exception.InvalidProductIdException;
 import com.target.myretailrestapi.exception.ProductMisMatchException;
 import com.target.myretailrestapi.exception.ProductNotFoundException;
 import com.target.myretailrestapi.model.Product;
 import com.target.myretailrestapi.repository.ProductRepository;
-import com.target.myretailrestapi.service.ProductService;
+import com.target.myretailrestapi.service.impl.ProductServiceImpl;
 
 @RestController
 public class ProductController {
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	ProductService productService;
+	ProductServiceImpl productService;
 
 	@Autowired
 	ProductRepository productRepository;
@@ -34,13 +35,25 @@ public class ProductController {
 	@GetMapping(value = "/v1/products/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> getProductDetails(@PathVariable String id) {
 		Product product = null;
-		try {
-			product = productService.getProductById(id);
-		} catch (Exception e) {
-			logger.debug("Product not found exception " + e);
-			throw new ProductNotFoundException();
+		if (!validProductId(id)) {
+			throw new InvalidProductIdException();
 		}
+		else
+			product = productService.getProductDetails(id);
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
+		/*try {
+			if (!validProductId(id)) {
+				throw new InvalidProductIdException();
+			}
+			else {
+				product = productService.getProductDetails(id);
+			}
+			
+		} catch (InvalidProductIdException ex) {
+			//logger.debug("Product not found exception " + e);
+			
+		}
+		return new ResponseEntity<Product>(product, HttpStatus.OK);*/
 	}
 
 	@PostMapping(value = "/v1/products", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,11 +72,19 @@ public class ProductController {
 				product = productService.updateProduct(product);
 			} catch (Exception e) {
 				throw new ProductNotFoundException();
-				// e.getStackTrace();
 			}
 		}
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
 
+	}
+
+	boolean validProductId(String id) {
+		//this can be expanded with modified Regex and more validation like product number can't start with 0
+		
+		if (id.matches("[0-9]+"))
+			return true;
+		else 
+			return false;
 	}
 
 }
