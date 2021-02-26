@@ -37,23 +37,9 @@ public class ProductController {
 		Product product = null;
 		if (!validProductId(id)) {
 			throw new InvalidProductIdException();
-		}
-		else
+		} else
 			product = productService.getProductDetails(id);
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
-		/*try {
-			if (!validProductId(id)) {
-				throw new InvalidProductIdException();
-			}
-			else {
-				product = productService.getProductDetails(id);
-			}
-			
-		} catch (InvalidProductIdException ex) {
-			//logger.debug("Product not found exception " + e);
-			
-		}
-		return new ResponseEntity<Product>(product, HttpStatus.OK);*/
 	}
 
 	@PostMapping(value = "/v1/products", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -79,11 +65,12 @@ public class ProductController {
 	}
 
 	boolean validProductId(String id) {
-		//this can be expanded with modified Regex and more validation like product number can't start with 0
-		
+		// this can be expanded with modified Regex and more validation like product
+		// number can't start with 0
+
 		if (id.matches("[0-9]+"))
 			return true;
-		else 
+		else
 			return false;
 	}
 

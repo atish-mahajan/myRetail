@@ -36,7 +36,7 @@ public class RedSkyServiceImpl {
 			productName = resDesc.get("title");
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 
 		return productName;
 	}

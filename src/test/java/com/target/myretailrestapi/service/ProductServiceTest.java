@@ -2,7 +2,6 @@ package com.target.myretailrestapi.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 
 import org.junit.Before;
@@ -19,7 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.target.myretailrestapi.model.CurrentPrice;
 import com.target.myretailrestapi.model.Product;
+import com.target.myretailrestapi.redskyservice.impl.RedSkyServiceImpl;
 import com.target.myretailrestapi.repository.ProductRepository;
+import com.target.myretailrestapi.service.impl.ProductServiceImpl;
 
 @WebMvcTest(value = ProductService.class)
 @RunWith(SpringRunner.class)
@@ -30,8 +31,11 @@ public class ProductServiceTest {
 	@MockBean
 	ProductRepository productRepoMock;
 
+	@MockBean
+	RedSkyServiceImpl redSkyServiceMock;
+
 	@InjectMocks
-	ProductService productServiceMock;
+	ProductServiceImpl productServiceMock;
 
 	@SuppressWarnings("deprecation")
 	@Before
@@ -52,13 +56,13 @@ public class ProductServiceTest {
 		assertEquals(mockedProduct, actualProduct);
 	}
 
-	@Test(expected = IOException.class)
+	@Test
 	public void updateInvalidProduct() throws Exception {
 		CurrentPrice current_price = new CurrentPrice();
 		current_price.setCurrencyCode("USD");
 		current_price.setcurrentValue(new BigDecimal(String.valueOf(13.49)));
 
-		Product mockedProduct = new Product("138604281", "The Big Lebowski (Blu-ray) (Widescreen)", current_price);
+		Product mockedProduct = new Product("13860428", "The Big Lebowski (Blu-ray) (Widescreen)", current_price);
 
 		Mockito.when(productRepoMock.save(mockedProduct)).thenReturn(mockedProduct);
 		Product actualProduct = productServiceMock.updateProduct(mockedProduct);
